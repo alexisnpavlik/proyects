@@ -8,7 +8,7 @@ from ploting import graphs
 from db import to_DB
 
 
-TOKEN = "BBFF-dhwHyUbSVUZVZXHWiWxBz540QuqpHP"
+TOKEN = "" #Ubidots token here
 DEVICE_LABEL = "water-station"
 
 
