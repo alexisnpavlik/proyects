@@ -34,6 +34,7 @@ def run():
     ps_tuple = analysis(comments) #results from the sentiment analysis
     graphs(ps_tuple[0], ps_tuple[1])
 
+
 if __name__ == '__main__':
     run()
 
