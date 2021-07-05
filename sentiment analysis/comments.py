@@ -1,5 +1,7 @@
-'''In this proyect I'll take comments from the comment section of the app Spotify
-    from the App Store for making a sentiment analysis with them.    
+'''In this proyect I'll take a news article of the New York Times to make 
+    a sentiment analysis with it, this also could represent how biased is the article. 
+    The article in wich will be run the analysis is 
+    "Lo que sabemos sobre la acusación formal en contra de la Organización Trump"   
     @author: Santiago Puerta'''
 
 
@@ -10,18 +12,28 @@ from sentiment import graphs #graphs
 
 
 #web page where the article is taken of
-PAGE = 'https://apps.apple.com/us/app/spotify-discover-new-music/id324684580#see-all/reviews'
-COMMENTS = '//p/text()' #Xpath to find the comments
+PAGE = 'https://www.nytimes.com/es/2021/07/03/espanol/organizacion-trump.html'
+PARAGRAPHS = '//p[@class = "css-axufdj evys1bk0"]/text()' #Xpath to find the paragraphs
 
 
-def get_comments():
+def to_str(paragraphs: list) -> str: #function to make a single string out of a list
+    article = ""
+    try:
+        for line in paragraphs:
+            article += line
+        return article
+    except ValueError as ve:
+        print(ve)
+
+
+def get_article():
     try:
         response = requests.get(PAGE) #response of the Apple Store server
         if response.status_code == 200: #if server gives me an OK
             doc = response.content.decode('utf-8') #the HMTL that is given I'll decode it
             x_doc = html.fromstring(doc) #I'll convert the doc to something that I can control with Xpath
-            comments = x_doc.xpath(COMMENTS)
-            return comments
+            paragraphs = x_doc.xpath(PARAGRAPHS)
+            return paragraphs
         else: #if server gives me an error wich error is?
             raise ValueError(f'Error {response.status_code}')
     except ValueError as ve:
@@ -29,9 +41,9 @@ def get_comments():
 
 
 def run():
-    comments = get_comments() #get the list of the comments of the app
-    #news = to_str(article) #get a single string out of the paragraphs
-    ps_tuple = analysis(comments) #results from the sentiment analysis
+    paragraphs = get_article() #get the list of the comments of the app
+    article = to_str(paragraphs) #get a single string out of the paragraphs
+    ps_tuple = analysis(article) #results from the sentiment analysis
     graphs(ps_tuple[0], ps_tuple[1])
 
 

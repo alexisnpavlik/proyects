@@ -9,30 +9,26 @@ from textblob import TextBlob #sentiment analysis library
 import matplotlib.pyplot as plt #graphs
 
 
-def graphs(polarity_l:list, subjectivity_l:list):
-    try:
-        plt.plot(polarity_l, c = 'blue', label= "polarity") #graph polarity with blue
-        plt.plot(subjectivity_l, c = "orange", label = "subjectivity") #graph subjectivity with orange
-        plt.legend()
-        plt.show() #showing the graph
-    except ValueError as ve:
-        print(ve)
+#due to it's only one value that it's been returned no graph needed
+# def graphs(polarity_l:list, subjectivity_l:list):
+#     try:
+#         plt.plot(polarity_l, c = 'blue', label= "polarity") #graph polarity with blue
+#         plt.plot(subjectivity_l, c = "orange", label = "subjectivity") #graph subjectivity with orange
+#         plt.legend()
+#         plt.show() #showing the graph
+#     except ValueError as ve:
+#         print(ve)
 
 
-def analysis(comments:list):
-    polarity_l = [] #list of given polarities from the comments
-    subjectivity_l = [] #list of given subjectivities from the comments
+def analysis(article:str):
     try:
-        for comment in range(0,len(comments)):
-            text = TextBlob(comments[comment])
-            polarity = text.sentiment.polarity #polarity of the comment
-            subjectivity = text.sentiment.subjectivity #subjectivity of the comment
-            #english = text.translate(to="en") # if article is given in Spanish I've to transalte it to english
-            #print(english) #print to see the translation
-            polarity_l.append(polarity) #add polarity to list
-            subjectivity_l.append(subjectivity) #add subjectivity to list
-            print(f"Comment number {comment + 1} \nPolarity analysis: {polarity}" + 
-                f"\nSubjectivity analysis: {subjectivity}") ##print to see the sentiment analysis
-        return polarity_l, subjectivity_l
+        text = TextBlob(article)
+        en_text = text.translate(to="en") #due to article is given in Spanish I've to transalte it to english
+        polarity = en_text.sentiment.polarity #polarity of the article
+        subjectivity = en_text.sentiment.subjectivity #subjectivity of the article
+        #print(english) #print to see the translation
+        print(f"Polarity analysis: {polarity}" + 
+                f"\nSubjectivity analysis: {subjectivity}") #print to see the sentiment analysis
+        return polarity, subjectivity
     except ValueError as ve:
         print(ve)
